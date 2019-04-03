@@ -14,13 +14,14 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  *
  * @author rossi.sebastian2
  */
-public class Principal extends javax.swing.JFrame {
+public class Principal extends javax.swing.JFrame{
 
     
     private List<File> archivos;
@@ -34,7 +35,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         setLocationRelativeTo(null);
-        
+        arbolito();
         archivos = new ArrayList<>();
         
         iniciarTabla();
@@ -63,6 +64,8 @@ public class Principal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         botonCarpeta = new javax.swing.JButton();
         txtFieldCarpeta = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        arbol = new javax.swing.JTree();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         menuArchivoSalir = new javax.swing.JMenuItem();
@@ -181,6 +184,8 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
+        jScrollPane2.setViewportView(arbol);
+
         menuArchivo.setText("Archivo");
 
         menuArchivoSalir.setText("Salir");
@@ -195,7 +200,7 @@ public class Principal extends javax.swing.JFrame {
 
         menuOtros.setText("Otros");
 
-        menuOtrosAcerca.setText("Acerca..");
+        menuOtrosAcerca.setText("Acerca...");
         menuOtrosAcerca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuOtrosAcercaActionPerformed(evt);
@@ -214,9 +219,12 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addComponent(jTabbedPane1)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -225,7 +233,9 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -258,6 +268,7 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botonCambiarActionPerformed
 
+    
     
     private void txtFieldCarpetaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFieldCarpetaMouseClicked
         if(seleccionadorCarpeta()){
@@ -383,6 +394,29 @@ public class Principal extends javax.swing.JFrame {
         System.exit(0);
     }
     
+    /**
+     * TODO: Hacer su propia clase
+     */
+    private void arbolito(){
+        File carpota = new File("/");
+        //Creamos el nodo raíz y el DefaultTreeModel
+        DefaultMutableTreeNode principal = new DefaultMutableTreeNode("Archivos");
+        DefaultTreeModel modelo;
+        //Este nodo lo usaremos para ir agregando archivos al nodo principal
+        DefaultMutableTreeNode nodo;
+        //Creamos un array de archivos a partir de los archivos del directorio
+        File[] listaArchivos = carpota.listFiles();
+        //Este for recorrerá "listaArchivos" mientras haya un archivo siguiente
+        for (File listaArchivo : listaArchivos) {
+             //Creamos un nodo con el nombre del archivo en el que estamos y se lo agregamos al nodo raíz
+             nodo = new DefaultMutableTreeNode(listaArchivo.getName());
+             principal.add(nodo);
+        }
+        //Creamos el modelo y se lo asignamos al jTree
+        modelo = new DefaultTreeModel(principal, true);
+        arbol.setModel(modelo);
+    }
+    
     /**************************************************************************/
     
     /**
@@ -420,6 +454,7 @@ public class Principal extends javax.swing.JFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTree arbol;
     private javax.swing.JTable archivosTabla;
     private javax.swing.ButtonGroup bgNumeracion;
     private javax.swing.JButton botonCambiar;
@@ -430,6 +465,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenuItem menuArchivoSalir;
