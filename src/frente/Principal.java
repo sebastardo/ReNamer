@@ -259,7 +259,6 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_botonCambiarActionPerformed
 
     
-    
     private void txtFieldCarpetaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFieldCarpetaMouseClicked
         if(seleccionadorCarpeta()){
             miModeloTabla.setLista(archivos); //carga tabla
